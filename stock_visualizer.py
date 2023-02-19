@@ -8,11 +8,14 @@ A lot of exceptions are not handled
 '''
 
 # Imports
+import matplotlib
+matplotlib.use('TkAgg')
 from tkinter import *
 from tkcalendar import DateEntry
 import datetime as dt
 
 import pandas_datareader as web
+import yfinance as yf
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from mpl_finance import candlestick_ohlc
@@ -32,7 +35,8 @@ def visualize():
 
     # Load Ticker From Entry And Download Data
     ticker = text_ticker.get()
-    data = web.DataReader(ticker, 'yahoo', start, end)
+    #data = web.DataReader(ticker, 'yahoo', start, end)
+    data = yf.download(ticker, start, end)
 
     # Restructure Data Into OHLC Format
     data = data[['Open', 'High', 'Low', 'Close']]
@@ -46,7 +50,8 @@ def visualize():
     ax.grid(True)
     ax.set_axisbelow(True)
     ax.set_title('{} Share Price'.format(ticker), color='white')
-    ax.figure.canvas.set_window_title('NeuralNine Stock Visualizer v0.1 Alpha')
+    #ax.figure.canvas.set_window_title('NeuralNine Stock Visualizer v0.1 Alpha')
+    plt.get_current_fig_manager().set_window_title('NeuralNine Stock Visualizer v0.1 Alpha')
     ax.set_facecolor('black')
     ax.figure.set_facecolor('#121212')
     ax.tick_params(axis='x', colors='white')
